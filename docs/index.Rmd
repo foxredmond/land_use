@@ -8,6 +8,9 @@ output:
 ---
 
 ```{r setup, include=FALSE}
+
+#Set default chunk settings to not show background code - only output
+
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
@@ -20,6 +23,7 @@ library(ggplot2)
 library(dplyr)
 library(tidyr)
 library(readr) 
+library(plotly)
 
 url <- 'https://ourworldindata.org/grapher/total-agricultural-area-over-the-long-term.csv?v=1&csvType=full&useColumnShortNames=true'
 
@@ -43,6 +47,23 @@ longland <- read_csv(url5)
 
 ```  
 
+### Why Care About Land Use?
+
+<font size="5">
+
+According to the World Wildlife Fund, 17% of the largest forest on Earth, the Amazon, has been destroyed, with almost all cleared land being used for some form of agriculture. 
+
+&nbsp;
+
+Land use change is one of the largest contributors to climate change on our planet. As we replace natural ecosystems with our agriculture systems, we both reduce the trees and other plants which absorb co2 from our atmosphere and increase livestock-based methane production.
+
+&nbsp;
+
+Among the United Nation's Sustainable Development Goals, goal 13 is Climate Action. Taking climate action to mitigate climate change involves setting up pathways to sustainably reduce global greenhouse gas emissions.
+
+In order to address the U.N. Goal 13: Climate Action, we must first explore and better understand our state of land use change. 
+
+
 ### The Current Landscape
 
 ```{r}
@@ -60,10 +81,10 @@ ggplot(longlandi,
        aes(
          x = year,
          y = grazing_c))+
-  geom_path() +
+  geom_path(size =2, color = 'blue') +
   theme_bw() +
   labs(title = "The Global Spike in Grazing Land Use",
-       caption = "Figure 1: Since 1600 there has been a drastic increase in global grazing/pasture land use.",
+       caption = "Figure 1. Since 1600 there has been a drastic increase in global grazing/pasture land use.",
        x = "Year",
        y = "Grazing Land Use (Millions of Hectares)")
   
@@ -92,11 +113,11 @@ ggplot(grazi,
       x= year,
       y= grazing_c,
       color = entity)) +
-  geom_path() +
+  geom_path(size =1) +
   facet_wrap(~entity) +
   theme_bw() +
   labs(title = "The Spike in Grazing Land is Attributed to Several Regions",
-       caption = "Figure 2: World regions with some of the largest increases in grazing land.",
+       caption = "Figure 2. World regions with some of the largest increases in grazing land.",
        x = "Year",
        y = "Grazing Land Use (Millions of Hectares)") +
   theme(axis.text.x = element_text(angle = 55, hjust = 1))
@@ -110,7 +131,7 @@ These 5 regions have exceptionally large increases in dedicated pasture land. Th
 
 <font size="7">
 
-So what happens we we add the most populous country in the world to these graphs?
+So what happens when we we add the most populous country in the world to these graphs?
 
 
 ### India Case Study
@@ -125,7 +146,8 @@ filter(year >=1600) %>%
   mutate(grazing_c = grazing_c/1000000)
 
 
-ggplot(grazi2,
+interactive <-
+  ggplot(grazi2,
       aes( 
       x= year,
       y= grazing_c,
@@ -134,10 +156,11 @@ ggplot(grazi2,
   facet_wrap(~entity) +
   theme_bw() +
   labs(title = "India Does Not Following the Overarching Grazing Trend",
-       caption = "",
+       caption = "Figure 3. India has not experienced rapid expansion of grazing land",
        x = "Year",
        y = "Grazing Land Use (Millions of Hectares)") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
+ggplotly(interactive)
 ```
 
 ---
@@ -166,14 +189,18 @@ ggplot(grazi3,
   facet_wrap(~entity) +
   theme_bw() +
   labs(title = "Australia Uses Significantly More Grazing Land than India",
-       caption = "",
+       caption = "Figure 4. Comparison for grazing land in Australia and India",
        x = "Year",
        y = "Grazing Land Use (Millions of Hectares)")
 
 ```
 
+---
 
+These graphs highlight the differences in grazing use in India (a country that does not produce
+much beef) compared to Australia (a country that does produce extensive beef). It is clear that there is a correlation between beef production and required pasture land, but on the upcoming slides we will take this one step further.
 
+### India vs. Australia
 
 ```{r}
 landi <- 
@@ -192,13 +219,17 @@ ggplot(landi,
   facet_wrap(~entity) +
   theme_bw() +
   labs(title = "Grazing Land Use Drives Agricultral Land Use",
-       caption = "",
+       caption = "Figure 5. Grazing land outweighs farming land when it comes to total use",
        x = "Year",
        y = "Agricultural - Pasture & Farmland - Land Use (Millions of Hectares)")
 ```
 
+---
 
-###
+This graph exemplifies how much more land is required to rear livestock than to grow food on farms. Even when all of India's agricultural food production is factored in, they still use significantly less land than India because they have so much less dedicated pastureland.
+
+
+### India vs. Australia
 
 
 ```{r}
@@ -216,11 +247,14 @@ ggplot(landuse_capi2,
   geom_path(size = 2) +
   theme_bw() +
   labs(title = "Aggricultural Land Use Dictates Efficiency",
-       caption = "",
+       caption = "Figure 6. This graph takes figure 5 and accounts for each country's population",
        x = "Year",
        y = "Agricultural Land per Capita (Hectares)")
-  
 ```
+
+---
+
+Agricultural Land per Capita denotes how much land must be dedicated towards agricultural for every person in a country. This could be viewed as a country's agricultural efficiency. However, it is important to note that food inequality must also be taken into account. Although India produces a high quantity of food, they have much higher hunger rates than Australia.
 
 
 ### How Countries can reduce grazing land
@@ -242,18 +276,52 @@ ggplot(cropi,
        caption = "",
        x = "Food source",
        y = "Land Use (m² per 100g of protein)") +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+   geom_hline(yintercept = 110, lty=2) +
+   annotate(geom='text',
+           x= 'Root Vegetables', 118, 
+           label= '50x Soy Land Use')
 ```
 
 ---
 
 An agricultural shift away from meat sources such as beef, lamb, and mutton would greatly reduce the land the countries must use to raise livestock. Food reliancy could shift to lower land-cost meats such as pig and poultry or to even more efficient plant based proteins. This in turn could reduce the effects of land use change, allowing for the restoration of natural ecosystems, all while mitigating climate change.
 
+### What Now?
+
+<font size="5">
+
+The global spike in grazing land use since 1600 has seen large portions of regions' natural ecosystem be wiped out to raise livestock. However, as we have seen, humans have much more efficient options for producing food sources. With soy proteins like Tofu taking 80-90 times less land use than Beef, Lamd and Mutton. 
+
+&nbsp;
+&nbsp;
+
+
+In order to address land use changes' contribution to global climate change, we must reconsider what we use to feed ourselves in order to minimize required land.
+
 
 ### Data Sources
 
-1. <font size="4"> (Land Use) https://ourworldindata.org/grapher/land-use-over-the-long-term
+<font size="5">
 
-2. (Agriculture Land) https://ourworldindata.org/grapher/total-agricultural-area-over-the-long-term
+All data from this story is sourced from *Our World in Data*. OWID is an organization that uses a worldwide network of researchers who publish stories with the goal of making their insights on some of the biggest global issues, more easily digestible. 
+
+
+&nbsp;
+
+Click on the following links to learn more about each of the datasets:
+
+&nbsp;
+
+1. [Long Term Global Land Use](https://ourworldindata.org/grapher/land-use-over-the-long-term)
+
+2. [Long Term Grazing Land Use](https://ourworldindata.org/grapher/grazing-land-use-over-the-long-term)
+
+3. [Agricultural Land Use Per Capita](https://ourworldindata.org/grapher/agricultural-area-per-capita)
+
+4. [Land Use Per Protein](https://ourworldindata.org/grapher/land-use-protein-poore?country=Beef+%28dairy+herd%29~Beef+%28beef+herd%29~Cheese~Fish+%28farmed%29~Eggs~Grains~Groundnuts~Milk~Lamb+%26+Mutton~Nuts~Peas~Pig+Meat~Other+Pulses~Poultry+Meat~Tofu+%28soybeans%29~Wheat+%26+Rye~Maize~Oatmeal)
+
+
+
 
 
