@@ -306,6 +306,10 @@ An agricultural shift away from meat sources such as beef, lamb, and mutton woul
 
 ### What Now?
 
+<font size="10">
+
+Addressing the Issue
+
 <font size="5">
 
 The global spike in grazing land use since 1600 has seen large portions of regions' natural ecosystem be wiped out to raise livestock. However, as we have seen, humans have much more efficient options for producing food sources. With soy proteins like Tofu taking 80-90 times less land use than Beef, Lamb and Mutton. 
@@ -319,9 +323,6 @@ In order to address land use changes' contribution to global climate change, we 
 
 ### Data Sources
 
-<font size="10">
-
-Addressing the Issue
 
 <font size="5">
 
