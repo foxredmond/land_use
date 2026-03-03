@@ -1,12 +1,259 @@
 ---
-title: "Land Use"
+title: "Land Use Change"
 author: "Fox Redmond"
 date: "`r Sys.Date()`"
-output: html_document
+output:
+  flexdashboard::flex_dashboard:
+    storyboard: true
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
 ```
 
+
+```{r, message = FALSE}
+
+#Load Libraries & Datasets
+
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(readr) 
+
+url <- 'https://ourworldindata.org/grapher/total-agricultural-area-over-the-long-term.csv?v=1&csvType=full&useColumnShortNames=true'
+
+land <- read_csv(url)
+
+
+url2 <- 'https://ourworldindata.org/grapher/land-use-protein-poore.csv?v=1&csvType=full&useColumnShortNames=true'
+crops <- read_csv(url2)
+
+url3 <- 'https://ourworldindata.org/grapher/grazing-land-use-over-the-long-term.csv?v=1&csvType=full&useColumnShortNames=true'
+
+grazing <- read_csv(url3)
+
+url4 <- 'https://ourworldindata.org/grapher/total-agricultural-land-use-per-person.csv?v=1&csvType=full&useColumnShortNames=true'
+
+landuse_cap <- read_csv(url4)
+
+url5 <- 'https://ourworldindata.org/grapher/land-use-over-the-long-term.csv?v=1&csvType=full&useColumnShortNames=true'
+
+longland <- read_csv(url5)
+
+```  
+
+### The Current Landscape
+
+```{r}
+
+#Set up a graph of global change in grazing land over time
+
+longlandi <-
+  longland %>% 
+  filter(entity %in% 'World') %>% 
+  filter(year >=1600) %>% 
+  mutate(grazing_c = grazing_c/1000000)
+ 
+
+ggplot(longlandi,
+       aes(
+         x = year,
+         y = grazing_c))+
+  geom_path() +
+  theme_bw() +
+  labs(title = "The Global Spike in Grazing Land Use",
+       caption = "Figure 1: Since 1600 there has been a drastic increase in global grazing/pasture land use.",
+       x = "Year",
+       y = "Grazing Land Use (Millions of Hectares)")
   
+```
+
+--- 
+
+In order to feed a growing population, the world has dedicated more of its land resources to grazing pasture land to raise livestock used to feed ourselves. According to the data's source, *Our World in Data*, grazing/pasture land means "land used permanently (five years or more) to grow herbaceous forage crops."
+
+
+### A Closer Breakdown
+  
+```{r}
+
+# Set up a graph of global change in pasture land - in most prominent regions - over time.
+
+grazi <- 
+  grazing %>% 
+  filter(entity %in% c('North America', 'China', 'Oceania', 'Africa', 'Brazil')) %>% 
+filter(year >=1600) %>% 
+  mutate(grazing_c = grazing_c/1000000)
+  
+
+ggplot(grazi,
+      aes( 
+      x= year,
+      y= grazing_c,
+      color = entity)) +
+  geom_path() +
+  facet_wrap(~entity) +
+  theme_bw() +
+  labs(title = "The Spike in Grazing Land is Attributed to Several Regions",
+       caption = "Figure 2: World regions with some of the largest increases in grazing land.",
+       x = "Year",
+       y = "Grazing Land Use (Millions of Hectares)") +
+  theme(axis.text.x = element_text(angle = 55, hjust = 1))
+```
+
+---
+
+These 5 regions have exceptionally large increases in dedicated pasture land. This is mostly due to rapidly growing populations, and/or the relative luxury to have ample available land for livestock rearing.
+
+### The Big Question
+
+<font size="7">
+
+So what happens we we add the most populous country in the world to these graphs?
+
+
+### India Case Study
+
+
+```{r}
+
+grazi2 <- 
+  grazing %>% 
+  filter(entity %in% c('North America', 'China', 'Oceania', 'Africa', 'Brazil', 'India')) %>% 
+filter(year >=1600) %>% 
+  mutate(grazing_c = grazing_c/1000000)
+
+
+ggplot(grazi2,
+      aes( 
+      x= year,
+      y= grazing_c,
+      color = entity)) +
+  geom_path() +
+  facet_wrap(~entity) +
+  theme_bw() +
+  labs(title = "India Does Not Following the Overarching Grazing Trend",
+       caption = "",
+       x = "Year",
+       y = "Grazing Land Use (Millions of Hectares)") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+---
+
+Although India is the largest country in the world by population, they have significantly less land dedicated to pastures and grazing. A large part of this has to do with India's nearly 80% Hindu population. In Hinduism, cows are considered sacred animals, and therefore there is considerably less demand for their meat. Lower demand for cattle means less pasture space needed to raise them.  
+
+
+
+### India vs. Australia
+
+
+```{r}
+grazi3 <- 
+  grazing %>% 
+  filter(entity %in% c('Australia', 'India')) %>% 
+filter(year >=1600) %>% 
+  mutate(grazing_c = grazing_c/1000000)
+
+
+ggplot(grazi3,
+      aes( 
+      x= year,
+      y= grazing_c,
+      color = entity)) +
+  geom_path(size = 2) +
+  facet_wrap(~entity) +
+  theme_bw() +
+  labs(title = "Australia Uses Significantly More Grazing Land than India",
+       caption = "",
+       x = "Year",
+       y = "Grazing Land Use (Millions of Hectares)")
+
+```
+
+
+
+
+```{r}
+landi <- 
+  land %>% 
+  filter(entity %in% c('Australia', 'India')) %>% 
+filter(year >=1600) %>% 
+  mutate(grazing_c = agriculture_c/1000000)
+
+
+ggplot(landi,
+      aes( 
+      x= year,
+      y= grazing_c,
+      color = entity)) +
+  geom_path(size = 2) +
+  facet_wrap(~entity) +
+  theme_bw() +
+  labs(title = "Grazing Land Use Drives Agricultral Land Use",
+       caption = "",
+       x = "Year",
+       y = "Agricultural - Pasture & Farmland - Land Use (Millions of Hectares)")
+```
+
+
+###
+
+
+```{r}
+
+landuse_capi2 <- 
+  landuse_cap %>% 
+  filter(entity %in% c('Australia', 'India')) %>% 
+  filter(year >=1600)
+
+ggplot(landuse_capi2,
+       aes(
+         x=year,
+         y=agriculture_c_per_capita,
+         color = entity)) +
+  geom_path(size = 2) +
+  theme_bw() +
+  labs(title = "Aggricultural Land Use Dictates Efficiency",
+       caption = "",
+       x = "Year",
+       y = "Agricultural Land per Capita (Hectares)")
+  
+```
+
+
+### How Countries can reduce grazing land
+
+```{r}
+
+cropi <-
+  crops %>% 
+filter(entity %in% c('Tofu', 'Beef (beef herd)', 'Lamb & Mutton', 'Pig Meat', 'Rice', 'Root Vegetables'))
+
+ggplot(cropi, 
+       aes(
+         x= entity, 
+         y= land_use_per_100g_protein,
+         fill= entity)) +
+  geom_col() +
+  theme_bw() +
+  labs(title = "Red Meats are the Most Land-requiring Protein Sources",
+       caption = "",
+       x = "Food source",
+       y = "Land Use (m² per 100g of protein)") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+---
+
+An agricultural shift away from meat sources such as beef, lamb, and mutton would greatly reduce the land the countries must use to raise livestock. Food reliancy could shift to lower land-cost meats such as pig and poultry or to even more efficient plant based proteins. This in turn could reduce the effects of land use change, allowing for the restoration of natural ecosystems, all while mitigating climate change.
+
+
+### Data Sources
+
+1. <font size="4"> (Land Use) https://ourworldindata.org/grapher/land-use-over-the-long-term
+
+2. (Agriculture Land) https://ourworldindata.org/grapher/total-agricultural-area-over-the-long-term
+
+
