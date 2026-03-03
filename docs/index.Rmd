@@ -290,10 +290,10 @@ ggplot(cropi,
        x = "Food source",
        y = "Land Use (m² per 100g of protein)") +
     theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-   geom_hline(yintercept = 110, lty=2) +
+   geom_hline(yintercept = 163, lty=2) +
    annotate(geom='text',
-           x= 'Root Vegetables', 118, 
-           label= '50x Soy Land Use') 
+           x= 'Root Vegetables', 155, 
+           label= '75x Soy Land Use') 
 ```
 
 ---
