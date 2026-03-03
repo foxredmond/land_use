@@ -319,6 +319,10 @@ In order to address land use changes' contribution to global climate change, we 
 
 ### Data Sources
 
+<font size="10">
+
+Addressing the Issue
+
 <font size="5">
 
 All data from this story is sourced from *Our World in Data*. OWID is an organization that uses a worldwide network of researchers who publish stories with the goal of making their insights on some of the biggest global issues, more easily digestible. 
