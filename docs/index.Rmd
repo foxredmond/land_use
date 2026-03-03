@@ -49,6 +49,10 @@ longland <- read_csv(url5)
 
 ### Why Care About Land Use?
 
+<font size="10">
+
+Land Use Change
+
 <font size="5">
 
 According to the World Wildlife Fund, 17% of the largest forest on Earth, the Amazon, has been destroyed, with almost all cleared land being used for some form of agriculture. 
