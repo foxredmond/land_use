@@ -84,7 +84,7 @@ ggplot(longlandi,
   geom_path(size =2, color = 'blue') +
   theme_bw() +
   labs(title = "The Global Spike in Grazing Land Use",
-       caption = "Figure 1. Since 1600 there has been a drastic increase in global grazing/pasture land use.",
+       caption = "Figure 1. Since 1600 there has been a drastic increase in global grazing/pasture land use.\n This trend tapered in 2000 and has been slightly decreasing since.",
        x = "Year",
        y = "Grazing Land Use (Millions of Hectares)")
   
@@ -117,7 +117,7 @@ ggplot(grazi,
   facet_wrap(~entity) +
   theme_bw() +
   labs(title = "The Spike in Grazing Land is Attributed to Several Regions",
-       caption = "Figure 2. World regions with some of the largest increases in grazing land.",
+       caption = "Figure 2. This Figure shows world regions with some of the largest increases\n in grazing land since 1600.",
        x = "Year",
        y = "Grazing Land Use (Millions of Hectares)") +
   theme(axis.text.x = element_text(angle = 55, hjust = 1))
@@ -139,6 +139,8 @@ So what happens when we we add the most populous country in the world to these g
 
 ```{r}
 
+# Add India to the proceeding graph to highlight a comparison
+
 grazi2 <- 
   grazing %>% 
   filter(entity %in% c('North America', 'China', 'Oceania', 'Africa', 'Brazil', 'India')) %>% 
@@ -152,11 +154,11 @@ interactive <-
       x= year,
       y= grazing_c,
       color = entity)) +
-  geom_path() +
+  geom_path(size =1) +
   facet_wrap(~entity) +
   theme_bw() +
   labs(title = "India Does Not Following the Overarching Grazing Trend",
-       caption = "Figure 3. India has not experienced rapid expansion of grazing land",
+       caption = "Figure 3. This Figure demonstrates that India has not experienced \n rapid expansion of grazing land at all similar to other world regions.",
        x = "Year",
        y = "Grazing Land Use (Millions of Hectares)") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
@@ -173,6 +175,9 @@ Although India is the largest country in the world by population, they have sign
 
 
 ```{r}
+
+# Recreate the preceeding graph pulling only India and Australia to explain the narrative
+
 grazi3 <- 
   grazing %>% 
   filter(entity %in% c('Australia', 'India')) %>% 
@@ -189,7 +194,7 @@ ggplot(grazi3,
   facet_wrap(~entity) +
   theme_bw() +
   labs(title = "Australia Uses Significantly More Grazing Land than India",
-       caption = "Figure 4. Comparison for grazing land in Australia and India",
+       caption = "Figure 4. This figures demonstrates Australia rapid growth in grazing land \nbeginning in the early 1800s compared to India's overall little relative grazing land use.",
        x = "Year",
        y = "Grazing Land Use (Millions of Hectares)")
 
@@ -203,6 +208,9 @@ much beef) compared to Australia (a country that does produce extensive beef). I
 ### India vs. Australia
 
 ```{r}
+
+# Make a graph to compare the total agricultural land use between India and Australia
+
 landi <- 
   land %>% 
   filter(entity %in% c('Australia', 'India')) %>% 
@@ -219,20 +227,22 @@ ggplot(landi,
   facet_wrap(~entity) +
   theme_bw() +
   labs(title = "Grazing Land Use Drives Agricultral Land Use",
-       caption = "Figure 5. Grazing land outweighs farming land when it comes to total use",
+       caption = "Figure 5. This Figure adds on to Figure 4, now including both countries total \n aggricultural land. It demonstrates how grazing land outweighs farming land \n when it comes to land requirement.",
        x = "Year",
        y = "Agricultural - Pasture & Farmland - Land Use (Millions of Hectares)")
 ```
 
 ---
 
-This graph exemplifies how much more land is required to rear livestock than to grow food on farms. Even when all of India's agricultural food production is factored in, they still use significantly less land than India because they have so much less dedicated pastureland.
+This graph exemplifies how much more land is required to rear livestock than to grow food on farms. Even when all of India's agricultural food production is factored in, India still use significantly less agricultural land than Australia because they have so much less dedicated pastureland.
 
 
 ### India vs. Australia
 
 
 ```{r}
+
+# Make a graph to compare total aggricultural land use per capita between Australia and India
 
 landuse_capi2 <- 
   landuse_cap %>% 
@@ -261,6 +271,8 @@ Agricultural Land per Capita denotes how much land must be dedicated towards agr
 
 ```{r}
 
+# Make a graph to compare land requirements for different food sources
+
 cropi <-
   crops %>% 
 filter(entity %in% c('Tofu', 'Beef (beef herd)', 'Lamb & Mutton', 'Pig Meat', 'Rice', 'Root Vegetables'))
@@ -271,16 +283,17 @@ ggplot(cropi,
          y= land_use_per_100g_protein,
          fill= entity)) +
   geom_col() +
+  scale_x_discrete(labels = c("Beef", "Lamb & Mutton", "Pork", "Rice", "Root Vegetables", "Tofu")) +
   theme_bw() +
   labs(title = "Red Meats are the Most Land-requiring Protein Sources",
-       caption = "",
+       caption = "Figure 7. Highlights comparison in land use from key food sources.",
        x = "Food source",
        y = "Land Use (m² per 100g of protein)") +
     theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
    geom_hline(yintercept = 110, lty=2) +
    annotate(geom='text',
            x= 'Root Vegetables', 118, 
-           label= '50x Soy Land Use')
+           label= '50x Soy Land Use') 
 ```
 
 ---
@@ -291,7 +304,7 @@ An agricultural shift away from meat sources such as beef, lamb, and mutton woul
 
 <font size="5">
 
-The global spike in grazing land use since 1600 has seen large portions of regions' natural ecosystem be wiped out to raise livestock. However, as we have seen, humans have much more efficient options for producing food sources. With soy proteins like Tofu taking 80-90 times less land use than Beef, Lamd and Mutton. 
+The global spike in grazing land use since 1600 has seen large portions of regions' natural ecosystem be wiped out to raise livestock. However, as we have seen, humans have much more efficient options for producing food sources. With soy proteins like Tofu taking 80-90 times less land use than Beef, Lamb and Mutton. 
 
 &nbsp;
 &nbsp;
@@ -316,6 +329,8 @@ Click on the following links to learn more about each of the datasets:
 1. [Long Term Global Land Use](https://ourworldindata.org/grapher/land-use-over-the-long-term)
 
 2. [Long Term Grazing Land Use](https://ourworldindata.org/grapher/grazing-land-use-over-the-long-term)
+
+3. [Long Term Agricultural Land Use](https://ourworldindata.org/grapher/total-agricultural-area-over-the-long-term)
 
 3. [Agricultural Land Use Per Capita](https://ourworldindata.org/grapher/agricultural-area-per-capita)
 
