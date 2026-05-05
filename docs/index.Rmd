@@ -96,7 +96,7 @@ ggplot(longlandi,
 
 --- 
 
-In order to feed a growing population, the world has dedicated more of its land resources to grazing pasture land to raise livestock used to feed ourselves. According to the data's source, *Our World in Data*, grazing/pasture land means "land used permanently (five years or more) to grow herbaceous forage crops."
+In order to feed a growing population, the world has dedicated more of its land resources to grazing pasture land to raise livestock used to feed ourselves. According to the data's source, *Our World in Data*, grazing/pasture land means "land used permanently (five years or more) to grow herbaceous forage crops." 
 
 
 ### A Closer Breakdown
@@ -284,7 +284,7 @@ filter(entity %in% c('Tofu', 'Beef (beef herd)', 'Lamb & Mutton', 'Pig Meat', 'R
 ggplot(cropi, 
        aes(
          x= entity, 
-         y= land_use_per_100g_protein,
+         y= land_use_per_100g_protein__poore__and__nemecek__2018,
          fill= entity)) +
   geom_col() +
   scale_x_discrete(labels = c("Beef", "Lamb & Mutton", "Pork", "Rice", "Root Vegetables", "Tofu")) +
